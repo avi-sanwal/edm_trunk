@@ -5,20 +5,10 @@
   <parent>
     <groupId>com.tweaker.edm.core</groupId>
     <artifactId>ethereal-download-manager</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${project-version}</version>
   </parent>
   <groupId>com.tweaker.edm.interfaces</groupId>
   <artifactId>edm-interfaces</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>${project-interfaces-version}</version>
   <name>edm-interfaces</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-  </dependencies>
 </project>

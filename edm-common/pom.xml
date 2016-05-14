@@ -2,18 +2,15 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.tweaker.edm.core</groupId>
-    <artifactId>edm-core</artifactId>
+    <artifactId>ethereal-download-manager</artifactId>
     <version>${project-version}</version>
   </parent>
-  <artifactId>edm-queue-manager</artifactId>
+  <artifactId>edm-common</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>com.tweaker.edm.interfaces</groupId>
   		<artifactId>edm-interfaces</artifactId>
-  	</dependency>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
+  		<version>${project-interfaces-version}</version>
   	</dependency>
   </dependencies>
 </project>

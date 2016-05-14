@@ -10,8 +10,17 @@
     <module>edm-core</module>
     <module>edm-interfaces</module>
     <module>edm-utilities</module>
+    <module>edm-common</module>
   </modules>
-  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project-version>0.0.1-SNAPSHOT</project-version>
+    <project-interfaces-version>1.0.0-SNAPSHOT</project-interfaces-version>
+  </properties>
+  <scm>
+  	<url>https://github.com/avi-sanwal/edm_trunk</url>
+  	<developerConnection>scm:git:https://github.com/avi-sanwal/edm_trunk.git</developerConnection>
+  </scm>
   <dependencyManagement>
 	<dependencies>
 		<dependency>
@@ -22,4 +31,5 @@
 		</dependency>
 	</dependencies>
 </dependencyManagement>
+  <url>https://github.com/avi-sanwal/edm_trunk</url>
 </project>
