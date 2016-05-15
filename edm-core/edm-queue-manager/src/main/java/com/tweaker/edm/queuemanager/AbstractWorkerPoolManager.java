@@ -36,7 +36,7 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
     private void getWorkersFromPersistanceManager() {
         DownloadData dd = getPersistanceManager().getPersistedData();
         for(Download download : dd.getDownloads()){
-            waitingWorkers.addAll(download.getChunks());
+            waitingWorkers.addAll(download.getIncompleteChunks());
         }
     }
 

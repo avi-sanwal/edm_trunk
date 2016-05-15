@@ -1,5 +1,6 @@
 package com.tweaker.edm.interfaces.download;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -9,9 +10,19 @@ public interface Download extends Serializable{
     
     double getCompletionPercent();
     
-    double getTotalBytes();
+    long getTotalBytes();
     
-    double getCompletedBytes();
+    long getCompletedBytes();
     
-    Collection<DownloadChunk> getChunks();
+    Collection<DownloadChunk> getIncompleteChunks();
+
+    Collection<DownloadChunk> getAllChunks();
+    
+    void startDownload();
+
+    void stopDownload();
+
+    void deleteDownload();
+
+    File getLocalFile();
 }

@@ -8,7 +8,9 @@ public interface DownloadChunk extends Worker {
     
     double getCompletionPercent();
     
-    double getTotalBytes();
+    long getTotalBytes();
     
-    double getCompletedBytes();
+    long getCompletedBytes();
+    
+    void delete();
 }

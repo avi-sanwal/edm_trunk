@@ -106,7 +106,7 @@ public class AbstractWorkerPoolManagerTest {
         for (int i = 0; i < howManyDownloads; i++) {
             Download mockDownload = EasyMock.createMock(Download.class);
             Collection<DownloadChunk> workers = createTestWorkers(howManyWorkers, false);
-            expect(mockDownload.getChunks()).andReturn(workers).once();
+            expect(mockDownload.getIncompleteChunks()).andReturn(workers).once();
             replay(mockDownload);
             testDownloads.add(mockDownload);
         }
