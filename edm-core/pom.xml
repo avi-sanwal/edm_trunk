@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.tweaker.edm.core</groupId>
 		<artifactId>ethereal-download-manager</artifactId>
-		<version>${project-version}</version>
+		<version>0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>edm-core</artifactId>
 	<packaging>pom</packaging>
@@ -20,12 +20,12 @@
 			<dependency>
 				<groupId>com.tweaker.edm.interfaces</groupId>
 				<artifactId>edm-interfaces</artifactId>
-				<version>${project-interfaces-version}</version>
+				<version>1.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<artifactId>edm-common</artifactId>
 				<groupId>com.tweaker.edm.common</groupId>
-				<version>${project-version}</version>
+				<version>0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

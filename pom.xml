@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tweaker.edm.core</groupId>
 	<artifactId>ethereal-download-manager</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Ethereal Download Manager</name>
 	<modules>
@@ -15,8 +15,6 @@
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project-version>0.0.1-SNAPSHOT</project-version>
-		<project-interfaces-version>1.0.0-SNAPSHOT</project-interfaces-version>
 	</properties>
 	<scm>
 		<url>https://github.com/avi-sanwal/edm_trunk</url>
