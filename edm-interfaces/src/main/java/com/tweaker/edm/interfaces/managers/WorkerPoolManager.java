@@ -10,4 +10,8 @@ public interface WorkerPoolManager {
     
     State queryManagerState();
     
+    String getManagerDescription();
+    
+    void stopProcessing();
+    
 }
