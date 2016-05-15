@@ -2,13 +2,14 @@ package com.tweaker.edm.queuemanager;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Queue;
 import java.util.logging.Logger;
 
-import com.tweaker.edm.common.PersistanceManagerImpl;
+import com.tweaker.edm.common.dto.DownloadData;
 import com.tweaker.edm.interfaces.Worker;
+import com.tweaker.edm.interfaces.download.Download;
 import com.tweaker.edm.interfaces.managers.PersistanceManager;
 import com.tweaker.edm.interfaces.managers.WorkerPoolManager;
+import com.tweaker.edm.persisitance.DownloadPersistanceManager;
 
 public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
 
@@ -18,13 +19,13 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
 
     protected State managerState = State.STOPPED;
 
-    protected Queue<Worker> waitingWorkers;
+    protected Collection<Worker> waitingWorkers = new ArrayList<>();
     protected Collection<Worker> activeWorkers = new ArrayList<>();
 
     protected abstract void activateWorkers();
 
     private void fetchAndActivateWorkers() {
-        waitingWorkers = getPersistanceManager().getPersistedWorkers();
+        getWorkersFromPersistanceManager();
         if (waitingWorkers.isEmpty()) {
             managerState = State.STOPPED;
         } else {
@@ -32,8 +33,15 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
         }
     }
 
-    protected PersistanceManager getPersistanceManager() {
-        return PersistanceManagerImpl.INSTANCE;
+    private void getWorkersFromPersistanceManager() {
+        DownloadData dd = getPersistanceManager().getPersistedData();
+        for(Download download : dd.getDownloads()){
+            waitingWorkers.addAll(download.getChunks());
+        }
+    }
+
+    protected PersistanceManager<DownloadData> getPersistanceManager() {
+        return DownloadPersistanceManager.getInstance();
     }
 
     @Override
@@ -51,6 +59,13 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
         fetchAndActivateWorkers();
     }
 
+    private void stopAllActiveWorkers() {
+        for (Worker worker : activeWorkers) {
+            worker.stop();
+        }
+        activeWorkers.clear();
+    }
+
     @Override
     public void stopProcessing() {
         if (managerState == State.STOPPED) {
@@ -60,13 +75,6 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
         stopAllActiveWorkers();
         managerState = State.STOPPED;
         getPersistanceManager().persistWorkers();
-    }
-
-    private void stopAllActiveWorkers() {
-        for (Worker worker : activeWorkers) {
-            worker.stop();
-        }
-        activeWorkers.clear();
     }
 
 }

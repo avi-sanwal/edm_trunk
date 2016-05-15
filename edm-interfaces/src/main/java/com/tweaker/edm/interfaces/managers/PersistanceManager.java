@@ -1,12 +1,8 @@
 package com.tweaker.edm.interfaces.managers;
 
-import java.util.Queue;
-
-import com.tweaker.edm.interfaces.Worker;
-
-public interface PersistanceManager {
+public interface PersistanceManager<E> {
     
-    Queue<Worker> getPersistedWorkers();
+    E getPersistedData();
     
     void persistWorkers();
 

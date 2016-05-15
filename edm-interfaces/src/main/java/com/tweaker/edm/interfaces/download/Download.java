@@ -1,8 +1,9 @@
 package com.tweaker.edm.interfaces.download;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-public interface Download {
+public interface Download extends Serializable{
 
     DownloadState getDownloadState();
     
@@ -12,5 +13,5 @@ public interface Download {
     
     double getCompletedBytes();
     
-    Collection<DownloadChunk> createChunks();
+    Collection<DownloadChunk> getChunks();
 }

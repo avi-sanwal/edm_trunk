@@ -17,6 +17,10 @@
 			<groupId>com.tweaker.edm.common</groupId>
 		</dependency>
 		<dependency>
+  			<artifactId>edm-persisitance</artifactId>
+  			<groupId>com.tweaker.edm.core.persistance</groupId>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>

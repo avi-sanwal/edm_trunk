@@ -4,9 +4,8 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.easymock.EasyMock;
 import org.easymock.IMockBuilder;
@@ -15,7 +14,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.tweaker.edm.common.dto.DownloadData;
 import com.tweaker.edm.interfaces.Worker;
+import com.tweaker.edm.interfaces.download.Download;
+import com.tweaker.edm.interfaces.download.DownloadChunk;
 import com.tweaker.edm.interfaces.managers.PersistanceManager;
 import com.tweaker.edm.interfaces.managers.WorkerPoolManager;
 
@@ -23,7 +25,7 @@ public class AbstractWorkerPoolManagerTest {
 
     private AbstractWorkerPoolManager workerManager;
     private static IMockBuilder<AbstractWorkerPoolManager> managerBuilder;
-    private PersistanceManager mockPersistanceManager;
+    private PersistanceManager<DownloadData> mockPersistanceManager;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -35,6 +37,8 @@ public class AbstractWorkerPoolManagerTest {
     public void setUp() throws Exception {
         workerManager = managerBuilder.createMock();
         mockPersistanceManager = EasyMock.createMock(PersistanceManager.class);
+        workerManager.activeWorkers = new ArrayList<>();
+        workerManager.waitingWorkers = new ArrayList<>();
     }
 
     @Test
@@ -46,9 +50,9 @@ public class AbstractWorkerPoolManagerTest {
 
     @Test
     public void shouldNotStartProcessingForEmptyList() {
-        Queue<Worker> testWorkers = new LinkedBlockingQueue<>();
+        DownloadData testData = new DownloadData();
         expect(workerManager.getPersistanceManager()).andReturn(mockPersistanceManager).once();
-        expect(mockPersistanceManager.getPersistedWorkers()).andReturn(testWorkers).once();
+        expect(mockPersistanceManager.getPersistedData()).andReturn(testData).once();
         replay(workerManager, mockPersistanceManager);
         workerManager.startProcessing();
         verify(workerManager, mockPersistanceManager);
@@ -57,9 +61,9 @@ public class AbstractWorkerPoolManagerTest {
 
     @Test
     public void shouldStartProcessingForNonEmptyWorkers() {
-        Queue<Worker> testWorkers = createTestWorkers(2);
+        DownloadData testData = createTestData(2, 2);
         expect(workerManager.getPersistanceManager()).andReturn(mockPersistanceManager).once();
-        expect(mockPersistanceManager.getPersistedWorkers()).andReturn(testWorkers).once();
+        expect(mockPersistanceManager.getPersistedData()).andReturn(testData).once();
         workerManager.activateWorkers();
         EasyMock.expectLastCall().once();
         replay(workerManager, mockPersistanceManager);
@@ -78,15 +82,15 @@ public class AbstractWorkerPoolManagerTest {
     @Test
     public void shouldStopProcessingAndPersistWorkerData() {
         workerManager.managerState = WorkerPoolManager.State.STARTED;
-        workerManager.activeWorkers = createTestWorkers(2);
+        Collection<Worker> testWorkers = createTestWorkers(2, true);
+        workerManager.activeWorkers = testWorkers;
         expect(workerManager.getPersistanceManager()).andReturn(mockPersistanceManager).once();
         mockPersistanceManager.persistWorkers();
         EasyMock.expectLastCall().once();
-        setWorkerStopExpectations(workerManager.activeWorkers);
         replay(workerManager, mockPersistanceManager);
         workerManager.stopProcessing();
         verify(workerManager, mockPersistanceManager);
-        verifyWorkers(workerManager.activeWorkers);
+        verifyWorkers(testWorkers);
         Assert.assertEquals(WorkerPoolManager.State.STOPPED, workerManager.queryManagerState());
         Assert.assertTrue(workerManager.activeWorkers.isEmpty());
     }
@@ -97,20 +101,32 @@ public class AbstractWorkerPoolManagerTest {
         }
     }
 
-    private void setWorkerStopExpectations(Collection<Worker> activeWorkers) {
-        for (Worker w : activeWorkers) {
-            w.stop();
-            EasyMock.expectLastCall().once();
-            replay(w);
+    private DownloadData createTestData(int howManyDownloads, int howManyWorkers) {
+        Collection<Download> testDownloads = new ArrayList<>(howManyDownloads);
+        for (int i = 0; i < howManyDownloads; i++) {
+            Download mockDownload = EasyMock.createMock(Download.class);
+            Collection<DownloadChunk> workers = createTestWorkers(howManyWorkers, false);
+            expect(mockDownload.getChunks()).andReturn(workers).once();
+            replay(mockDownload);
+            testDownloads.add(mockDownload);
         }
+        DownloadData dd = new DownloadData();
+        dd.setDownloads(testDownloads);
+        return dd;
     }
 
-    private Queue<Worker> createTestWorkers(int howMany) {
-        Queue<Worker> testWorkers = new LinkedBlockingQueue<>(howMany);
-        for (int i = 0; i < howMany; i++) {
-            Worker mockWorker = EasyMock.createMock(Worker.class);
-            testWorkers.add(mockWorker);
+    private <E extends Worker> Collection<E> createTestWorkers(int howManyWorkers, boolean expectStop) {
+        Collection<E> workers = new ArrayList<>();
+        for (int j = 0; j < howManyWorkers; j++) {
+            @SuppressWarnings("unchecked")
+            E mockWorker = (E) EasyMock.createMock(Worker.class);
+            if(expectStop) {
+                mockWorker.stop();
+                EasyMock.expectLastCall().once();
+            }
+            replay(mockWorker);
+            workers.add(mockWorker);
         }
-        return testWorkers;
+        return workers;
     }
 }
