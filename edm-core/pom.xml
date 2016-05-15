@@ -14,8 +14,7 @@
 	<url>http://maven.apache.org</url>
 	<modules>
 		<module>edm-queue-manager</module>
-		<module>edm-persistance</module>
-		<module>edm-persisitance</module>
+		<module>edm-persistence</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
@@ -30,8 +29,8 @@
 				<version>0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>com.tweaker.edm.core.persistance</groupId>
-				<artifactId>edm-persisitance</artifactId>
+				<groupId>com.tweaker.edm.core.persistence</groupId>
+				<artifactId>edm-persistence</artifactId>
 				<version>0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>

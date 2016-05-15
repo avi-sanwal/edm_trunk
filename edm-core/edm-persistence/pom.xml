@@ -6,8 +6,8 @@
 		<artifactId>edm-core</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.tweaker.edm.core.persistance</groupId>
-	<artifactId>edm-persisitance</artifactId>
+	<groupId>com.tweaker.edm.core.persistence</groupId>
+	<artifactId>edm-persistence</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.tweaker.edm.interfaces</groupId>
