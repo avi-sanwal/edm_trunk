@@ -15,6 +15,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.tweaker.edm.common.dto.DownloadData;
+import com.tweaker.edm.exceptions.DownloadManagerException;
+import com.tweaker.edm.exceptions.persistance.DataWriteException;
 import com.tweaker.edm.interfaces.Worker;
 import com.tweaker.edm.interfaces.download.Download;
 import com.tweaker.edm.interfaces.download.DownloadChunk;
@@ -42,14 +44,14 @@ public class AbstractWorkerPoolManagerTest {
     }
 
     @Test
-    public void shouldNotStartProcessingWhenAlreadyStarted() {
+    public void shouldNotStartProcessingWhenAlreadyStarted() throws DownloadManagerException {
         workerManager.managerState = WorkerPoolManager.State.STARTED;
         workerManager.startProcessing();
         Assert.assertEquals(WorkerPoolManager.State.STARTED, workerManager.queryManagerState());
     }
 
     @Test
-    public void shouldNotStartProcessingForEmptyList() {
+    public void shouldNotStartProcessingForEmptyList() throws DownloadManagerException {
         DownloadData testData = new DownloadData();
         expect(workerManager.getPersistanceManager()).andReturn(mockPersistanceManager).once();
         expect(mockPersistanceManager.getPersistedData()).andReturn(testData).once();
@@ -60,7 +62,7 @@ public class AbstractWorkerPoolManagerTest {
     }
 
     @Test
-    public void shouldStartProcessingForNonEmptyWorkers() {
+    public void shouldStartProcessingForNonEmptyWorkers() throws DownloadManagerException {
         DownloadData testData = createTestData(2, 2);
         expect(workerManager.getPersistanceManager()).andReturn(mockPersistanceManager).once();
         expect(mockPersistanceManager.getPersistedData()).andReturn(testData).once();
@@ -73,19 +75,19 @@ public class AbstractWorkerPoolManagerTest {
     }
 
     @Test
-    public void shouldNotStopProcessingWhenAlreadyStopped() {
+    public void shouldNotStopProcessingWhenAlreadyStopped() throws DataWriteException {
         workerManager.managerState = WorkerPoolManager.State.STOPPED;
         workerManager.stopProcessing();
         Assert.assertEquals(WorkerPoolManager.State.STOPPED, workerManager.queryManagerState());
     }
 
     @Test
-    public void shouldStopProcessingAndPersistWorkerData() {
+    public void shouldStopProcessingAndPersistWorkerData() throws DownloadManagerException {
         workerManager.managerState = WorkerPoolManager.State.STARTED;
         Collection<Worker> testWorkers = createTestWorkers(2, true);
         workerManager.activeWorkers = testWorkers;
         expect(workerManager.getPersistanceManager()).andReturn(mockPersistanceManager).once();
-        mockPersistanceManager.persistWorkers();
+        mockPersistanceManager.persistData(EasyMock.anyObject(DownloadData.class));
         EasyMock.expectLastCall().once();
         replay(workerManager, mockPersistanceManager);
         workerManager.stopProcessing();

@@ -17,5 +17,13 @@
 			<artifactId>edm-common</artifactId>
 			<groupId>com.tweaker.edm.common</groupId>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+		</dependency>
 	</dependencies>
 </project>

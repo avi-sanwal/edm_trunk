@@ -1,17 +1,20 @@
 package com.tweaker.edm.interfaces.managers;
 
+import com.tweaker.edm.exceptions.DownloadManagerException;
+import com.tweaker.edm.exceptions.persistance.DataWriteException;
+
 public interface WorkerPoolManager {
 
     enum State {
         STOPPED, STARTED
     }
     
-    void startProcessing();
+    void startProcessing() throws DownloadManagerException;
     
     State queryManagerState();
     
     String getManagerDescription();
     
-    void stopProcessing();
+    void stopProcessing() throws DataWriteException;
     
 }

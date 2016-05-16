@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.logging.Logger;
 
 import com.tweaker.edm.common.dto.DownloadData;
+import com.tweaker.edm.exceptions.DownloadManagerException;
+import com.tweaker.edm.exceptions.persistance.DataReadException;
+import com.tweaker.edm.exceptions.persistance.DataWriteException;
 import com.tweaker.edm.interfaces.Worker;
 import com.tweaker.edm.interfaces.download.Download;
 import com.tweaker.edm.interfaces.managers.PersistanceManager;
@@ -19,12 +22,13 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
 
     protected State managerState = State.STOPPED;
 
+    private DownloadData downloadData;
     protected Collection<Worker> waitingWorkers = new ArrayList<>();
     protected Collection<Worker> activeWorkers = new ArrayList<>();
 
     protected abstract void activateWorkers();
 
-    private void fetchAndActivateWorkers() {
+    private void fetchAndActivateWorkers() throws DataReadException {
         getWorkersFromPersistanceManager();
         if (waitingWorkers.isEmpty()) {
             managerState = State.STOPPED;
@@ -33,9 +37,9 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
         }
     }
 
-    private void getWorkersFromPersistanceManager() {
-        DownloadData dd = getPersistanceManager().getPersistedData();
-        for(Download download : dd.getDownloads()){
+    private void getWorkersFromPersistanceManager() throws DataReadException {
+        downloadData = getPersistanceManager().getPersistedData();
+        for(Download download : downloadData.getDownloads()){
             waitingWorkers.addAll(download.getIncompleteChunks());
         }
     }
@@ -50,7 +54,7 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
     }
 
     @Override
-    public void startProcessing() {
+    public void startProcessing() throws DownloadManagerException {
         if (managerState == State.STARTED) {
             LOGGER.warning("Pool manager is already STARTED");
             return;
@@ -67,14 +71,14 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
     }
 
     @Override
-    public void stopProcessing() {
+    public void stopProcessing() throws DataWriteException {
         if (managerState == State.STOPPED) {
             LOGGER.warning("Pool manager is already STOPPED");
             return;
         }
         stopAllActiveWorkers();
         managerState = State.STOPPED;
-        getPersistanceManager().persistWorkers();
+        getPersistanceManager().persistData(downloadData);
     }
 
 }
