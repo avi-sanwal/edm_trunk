@@ -15,6 +15,14 @@ public abstract class AbstractDownload implements Download {
     protected long totalBytes = 0;
     private Collection<DownloadChunk> chunks;
     
+    private String completedFilePath;
+    
+    public AbstractDownload() {
+        completedFilePath = determineDownloadFileName();
+    }
+
+    protected abstract String determineDownloadFileName();
+
     @Override
     public DownloadState getDownloadState() {
         return state;
@@ -56,5 +64,13 @@ public abstract class AbstractDownload implements Download {
     @Override
     public Collection<DownloadChunk> getAllChunks() {
         return chunks;
+    }
+
+    public String getCompletedFilePath() {
+        return completedFilePath;
+    }
+
+    public void setCompletedFilePath(String completedFilePath) {
+        this.completedFilePath = completedFilePath;
     }
 }
