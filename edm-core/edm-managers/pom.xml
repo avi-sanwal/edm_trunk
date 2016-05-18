@@ -6,7 +6,7 @@
 		<artifactId>edm-core</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>edm-queue-manager</artifactId>
+	<artifactId>edm-managers</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.tweaker.edm.interfaces</groupId>

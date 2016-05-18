@@ -1,7 +1,8 @@
 package com.tweaker.edm.queuemanager;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.logging.Logger;
 
 import com.tweaker.edm.common.dto.DownloadData;
@@ -23,8 +24,8 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
     protected State managerState = State.STOPPED;
 
     private DownloadData downloadData;
-    protected Collection<Worker> waitingWorkers = new ArrayList<>();
-    protected Collection<Worker> activeWorkers = new ArrayList<>();
+    protected Queue<Worker> waitingWorkers = new LinkedList<>();
+    protected Queue<Worker> activeWorkers = new LinkedList<>();
 
     protected abstract void activateWorkers();
 
@@ -81,4 +82,11 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
         getPersistanceManager().persistData(downloadData);
     }
 
+    @Override
+    public <E extends Worker> void addWorkers(Collection<E> workers) {
+        waitingWorkers.addAll(workers);
+        if(managerState == State.STARTED){
+            activateWorkers();
+        }
+    }
 }

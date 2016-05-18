@@ -27,7 +27,7 @@ public abstract class AbstractDownload implements Download {
     public DownloadState getDownloadState() {
         return state;
     }
-
+    
     @Override
     public double getCompletionPercent() {
         if(totalBytes == 0) {

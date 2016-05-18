@@ -10,7 +10,6 @@
 	<modules>
 		<module>edm-core</module>
 		<module>edm-interfaces</module>
-		<module>edm-utilities</module>
 		<module>edm-common</module>
 	</modules>
 	<properties>

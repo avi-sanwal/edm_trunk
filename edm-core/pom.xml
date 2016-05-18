@@ -13,7 +13,7 @@
 	<name>edm-core</name>
 	<url>http://maven.apache.org</url>
 	<modules>
-		<module>edm-queue-manager</module>
+		<module>edm-managers</module>
 		<module>edm-persistence</module>
 	</modules>
 	<dependencyManagement>
@@ -24,8 +24,8 @@
 				<version>1.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<artifactId>edm-common</artifactId>
 				<groupId>com.tweaker.edm.common</groupId>
+				<artifactId>edm-common</artifactId>
 				<version>0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>

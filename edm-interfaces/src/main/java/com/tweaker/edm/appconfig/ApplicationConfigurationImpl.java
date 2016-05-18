@@ -1,4 +1,4 @@
-package com.tweaker.edm.utilities;
+package com.tweaker.edm.appconfig;
 
 import java.io.File;
 
@@ -28,10 +28,12 @@ public enum ApplicationConfigurationImpl implements ApplicationConfiguration {
         String os = System.getProperty("os.name");
         if (os.contains("Windows")) {
             return System.getenv("LOCALAPPDATA") + "\\" + SHORT_APP_NAME;
-        } else if (os.contains("mac")) {
-            return "~/Library/Application Support/" + SHORT_APP_NAME;
         }
-        return "~/.local/share/" + SHORT_APP_NAME;
+        String homeDir = System.getProperty("user.home");
+        if (os.contains("mac")) {
+            return homeDir + "/Library/Application Support/" + SHORT_APP_NAME;
+        }
+        return homeDir + "/.local/share/" + SHORT_APP_NAME;
     }
 
     @Override
@@ -53,5 +55,5 @@ public enum ApplicationConfigurationImpl implements ApplicationConfiguration {
     public File getIncompleteDownloadDirectory() {
         return incompleteDownloadDirectory;
     }
-
+    
 }
