@@ -89,4 +89,8 @@ public abstract class AbstractWorkerPoolManager implements WorkerPoolManager {
             activateWorkers();
         }
     }
+    @Override
+    public <E extends Worker> void stopWorkers(Collection<E> workers) {
+        throw new RuntimeException();
+    }
 }

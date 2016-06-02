@@ -14,6 +14,7 @@ import org.easymock.IMockBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.tweaker.edm.common.dto.DownloadData;
@@ -99,6 +100,12 @@ public class AbstractWorkerPoolManagerTest {
         Assert.assertTrue(workerManager.activeWorkers.isEmpty());
     }
 
+    @Test
+    @Ignore
+    public void shouldStopWorkers() {
+        Assert.fail("Not yet implemented");
+    }
+
     private void verifyWorkers(Collection<Worker> activeWorkers) {
         for (Worker w : activeWorkers) {
             verify(w);
@@ -124,7 +131,7 @@ public class AbstractWorkerPoolManagerTest {
         for (int j = 0; j < howManyWorkers; j++) {
             @SuppressWarnings("unchecked")
             E mockWorker = (E) EasyMock.createMock(Worker.class);
-            if(expectStop) {
+            if (expectStop) {
                 mockWorker.stop();
                 EasyMock.expectLastCall().once();
             }

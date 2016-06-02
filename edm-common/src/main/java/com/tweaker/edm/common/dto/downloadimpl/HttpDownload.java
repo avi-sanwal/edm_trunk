@@ -1,8 +1,7 @@
 package com.tweaker.edm.common.dto.downloadimpl;
 
-import java.io.File;
-
 import com.tweaker.edm.common.dto.AbstractDownload;
+import com.tweaker.edm.interfaces.download.DownloadChunk;
 import com.tweaker.edm.interfaces.download.DownloadState;
 import com.tweaker.edm.interfaces.managers.WorkerPoolManager;
 
@@ -17,29 +16,28 @@ public class HttpDownload extends AbstractDownload {
             return;
         }
         setDownloadState(DownloadState.WAITING);
-        getCurrentPoolManager().addWorkers(this.getIncompleteChunks());
+        getCurrentPoolManager().addWorkers(getIncompleteChunks());
     }
 
-    private WorkerPoolManager getCurrentPoolManager() {
+    protected WorkerPoolManager getCurrentPoolManager() {
         return null;
     }
 
     @Override
     public void stopDownload() {
-        // TODO Auto-generated method stub
-
+        if (getDownloadState() == DownloadState.STOPPED) {
+            return;
+        }
+        setDownloadState(DownloadState.STOPPED);
+        getCurrentPoolManager().stopWorkers(getIncompleteChunks());
     }
 
     @Override
     public void deleteDownload() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public File getLocalFile() {
-        // TODO Auto-generated method stub
-        return null;
+        stopDownload();
+        for (DownloadChunk chunk : getAllChunks()) {
+            chunk.delete();
+        }
     }
 
     @Override

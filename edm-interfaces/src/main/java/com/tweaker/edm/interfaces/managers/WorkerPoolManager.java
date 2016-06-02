@@ -21,5 +21,7 @@ public interface WorkerPoolManager {
     void stopProcessing() throws DataWriteException;
     
     <E extends Worker> void addWorkers(Collection<E> workers);
+
+    <E extends Worker> void stopWorkers(Collection<E> workers);
     
 }

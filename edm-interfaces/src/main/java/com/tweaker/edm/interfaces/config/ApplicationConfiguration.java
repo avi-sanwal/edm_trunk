@@ -12,5 +12,7 @@ public interface ApplicationConfiguration extends Serializable {
     File getDataFile();
 
     File getIncompleteDownloadDirectory();
+    
+    File getCompletedDownloadDirectory();
 
 }

@@ -15,6 +15,7 @@ public enum ApplicationConfigurationImpl implements ApplicationConfiguration {
     private File dataFile;
     private String appDataPath;
     private File incompleteDownloadDirectory;
+    private File completedDownloadDirectory;
 
     private ApplicationConfigurationImpl() {
         appDataPath = determineAppDataFolder();
@@ -54,6 +55,11 @@ public enum ApplicationConfigurationImpl implements ApplicationConfiguration {
     @Override
     public File getIncompleteDownloadDirectory() {
         return incompleteDownloadDirectory;
+    }
+
+    @Override
+    public File getCompletedDownloadDirectory() {
+        return completedDownloadDirectory;
     }
     
 }
