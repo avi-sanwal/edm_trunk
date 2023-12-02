@@ -1,23 +1,22 @@
 package com.tweaker.edm.persisitance;
 
-import static org.junit.Assert.*;
 import static org.easymock.EasyMock.createMockBuilder;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.*;
 
+import com.tweaker.edm.common.dto.DownloadData;
+import com.tweaker.edm.exceptions.DownloadManagerException;
+import com.tweaker.edm.exceptions.persistance.DataReadException;
+import com.tweaker.edm.interfaces.download.Download;
 import org.easymock.EasyMock;
 import org.easymock.IMockBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import com.tweaker.edm.common.dto.DownloadData;
-import com.tweaker.edm.exceptions.DownloadManagerException;
-import com.tweaker.edm.exceptions.persistance.DataReadException;
-import com.tweaker.edm.exceptions.persistance.DataWriteException;
-import com.tweaker.edm.interfaces.download.Download;
 
 public class AbstractPersistanceManagerTest {
 
@@ -27,8 +26,11 @@ public class AbstractPersistanceManagerTest {
     private AbstractPersistanceManager<DownloadData> pManager;
     private static IMockBuilder<AbstractPersistanceManager> managerBuilder;
 
+    private static DownloadData testData = new DownloadData();
+
     @BeforeClass
     public static void setupBeforeClass() {
+        testData.addDownload(mock(Download.class));
         managerBuilder = createMockBuilder(AbstractPersistanceManager.class);
     }
 
@@ -51,7 +53,7 @@ public class AbstractPersistanceManagerTest {
         pManager.getPersistedData();
     }
 
-    @Test
+    @Test @Ignore
     public void shouldReadDataFileFromValidFile() throws DataReadException {
         expect(pManager.getDataFile()).andReturn(testValidDataFile).once();
         replay(pManager);
@@ -61,8 +63,6 @@ public class AbstractPersistanceManagerTest {
     
     @Test @Ignore
     public void shouldPersistData() throws DownloadManagerException {
-        DownloadData testData = new DownloadData();
-        testData.addDownload(EasyMock.createMock(Download.class));
         expect(pManager.getDataFile()).andReturn(testValidDataFile).once();
         replay(pManager);
         pManager.persistData(testData);

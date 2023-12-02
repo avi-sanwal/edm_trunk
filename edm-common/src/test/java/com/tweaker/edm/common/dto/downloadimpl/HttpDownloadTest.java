@@ -5,23 +5,21 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import com.tweaker.edm.interfaces.download.DownloadChunk;
+import com.tweaker.edm.interfaces.download.DownloadState;
+import com.tweaker.edm.interfaces.managers.WorkerPoolManager;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.easymock.EasyMock;
 import org.easymock.IMockBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.tweaker.edm.interfaces.download.DownloadChunk;
-import com.tweaker.edm.interfaces.download.DownloadState;
-import com.tweaker.edm.interfaces.managers.WorkerPoolManager;
-
 public class HttpDownloadTest {
 
     private HttpDownload testDownload;
-    private static IMockBuilder<HttpDownload> mockBuilder;
+    private static IMockBuilder<Object> mockBuilder;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {

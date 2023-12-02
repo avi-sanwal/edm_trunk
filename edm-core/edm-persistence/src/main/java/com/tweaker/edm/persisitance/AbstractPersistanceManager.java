@@ -1,14 +1,13 @@
 package com.tweaker.edm.persisitance;
 
+import com.tweaker.edm.exceptions.persistance.DataReadException;
+import com.tweaker.edm.exceptions.persistance.DataWriteException;
+import com.tweaker.edm.interfaces.managers.PersistanceManager;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import com.tweaker.edm.exceptions.persistance.DataReadException;
-import com.tweaker.edm.exceptions.persistance.DataWriteException;
-import com.tweaker.edm.interfaces.managers.PersistanceManager;
 
 public abstract class AbstractPersistanceManager <E> implements PersistanceManager<E> {
     
