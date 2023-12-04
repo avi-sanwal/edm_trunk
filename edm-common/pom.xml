@@ -30,7 +30,7 @@
 		<dependency>
 		    <groupId>software.amazon.awscdk</groupId>
 		    <artifactId>s3</artifactId>
-		    <version>1.170.0</version>
+		    <version>1.204.0</version>
 		</dependency>
 	</dependencies>
 	<build>
